@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.DS_Store
+models/*.keras
+models/metrics/*.json
+logs/*.log
+data/batch_output/*.csv
+data/archive/processed_manifest.json
+.pytest_cache/
+
+data/raw/
+data/batch_input/
+data/archive/
+data/batch_output/

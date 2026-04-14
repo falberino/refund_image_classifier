@@ -1,0 +1,46 @@
+project:
+  name: refund-image-classifier
+  model_name: mobilenetv2_refund_classifier
+  model_version: v1
+
+dataset:
+  name: "Kaggle: Image Classification Dataset (12 classes)"
+  source_url: "https://www.kaggle.com/datasets/alxmamaev/flowers-recognition"
+  data_dir: data/raw
+  train_subdir: train
+  val_subdir: val
+  test_subdir: test
+  image_size: [160, 160]
+  channels: 3
+  class_names: []  # optional override; empty => inferred from train folders
+
+training:
+  seed: 42
+  batch_size: 32
+  epochs: 5
+  learning_rate: 0.0003
+  validation_split: 0.2
+  test_split: 0.1
+  augmentation:
+    horizontal_flip: true
+    rotation: 0.1
+    zoom: 0.1
+
+inference:
+  confidence_threshold: 0.0
+
+paths:
+  model_dir: models
+  model_file: models/latest_model.keras
+  class_map_file: models/class_mapping.json
+  history_plot_file: models/training_history.png
+  metrics_dir: models/metrics
+  logs_dir: logs
+  batch_input_dir: data/batch_input
+  batch_output_dir: data/batch_output
+  archive_dir: data/archive
+  processed_manifest_file: data/archive/processed_manifest.json
+
+api:
+  host: 0.0.0.0
+  port: 8000
