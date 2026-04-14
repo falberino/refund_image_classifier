@@ -236,14 +236,67 @@ pytest -q
 docker compose up --build
 ```
 
-## 12) Design Decisions
+## 12) Cloud Setup (Optional / Extra Credit)
+
+### A) Deploy API to Render
+1. Push this repository to GitHub.
+2. Create a new **Web Service** in Render and connect your repository.
+3. Select **Docker** runtime (Render will use the existing `Dockerfile`).
+4. Deploy from `main` branch.
+5. Verify cloud API:
+   - `https://<your-render-service>.onrender.com/health`
+   - `https://<your-render-service>.onrender.com/docs`
+
+### B) Nightly batch in cloud (GitHub Actions)
+Add workflow file `.github/workflows/nightly_batch.yml`:
+
+```yaml
+name: Nightly Batch Inference
+
+on:
+  schedule:
+    - cron: "30 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  batch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run batch prediction
+        run: python batch_predict.py
+
+      - name: Upload batch outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-batch-output
+          path: |
+            data/batch_output/
+            logs/batch.log
+```
+
+### Cloud note
+- The current project uses local folders for batch input/output.
+- For production-grade cloud persistence, replace local folders with object storage (AWS S3, Azure Blob, or GCS).
+
+## 13) Design Decisions
 - **TensorFlow + MobileNetV2**: simple transfer learning, laptop-friendly baseline.
 - **FastAPI**: clean schema-driven API with built-in docs and validation.
 - **Local file storage**: practical for prototype and easy to inspect.
 - **CSV batch outputs + manifest**: traceable and idempotent nightly jobs.
 - **Config-first approach**: easy updates without touching code.
 
-## 13) Future Improvements
+## 14) Future Improvements
 - Add domain dataset for real refund categories and class imbalance handling.
 - Add model registry/versioning promotion workflow.
 - Add experiment tracking (MLflow/W&B).
