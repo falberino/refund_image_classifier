@@ -108,7 +108,23 @@ pip install -r requirements.txt
 ```
 
 ## 6) Data Preparation
-Download dataset and place images into class folders under:
+This repository does **not** include the full dataset files.  
+Download the dataset from Kaggle and place images into class folders under `data/raw/`.
+
+- **Dataset URL**: https://www.kaggle.com/datasets/ryanbadai/clothes-dataset?resource=download
+
+### Option A: Download manually
+1. Open the Kaggle URL above.
+2. Download and unzip the dataset.
+3. Copy the class folders into `data/raw/`.
+
+### Option B: Download with Kaggle CLI
+```bash
+kaggle datasets download -d ryanbadai/clothes-dataset -p data
+unzip data/clothes-dataset.zip -d data
+```
+
+After extracting, ensure the final structure in this project is:
 
 ```text
 data/raw/
